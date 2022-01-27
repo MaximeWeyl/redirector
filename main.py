@@ -1,5 +1,6 @@
 import json
 import os
+from functools import wraps
 
 from flask import Flask, redirect, request
 from flask_basicauth import BasicAuth
@@ -16,6 +17,28 @@ app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME', 'admin
 app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD', 'admin')
 basic_auth = BasicAuth(app)
 
+def requires_auth(view_func):
+    """
+    A decorator that can be used to protect specific views with HTTP
+    basic access authentication, with an alternative method using headers
+    XX-redirector-user and XX-redirector-password
+    """
+    @wraps(view_func)
+    def wrapper(*args, **kwargs):
+        if basic_auth.authenticate():
+            return view_func(*args, **kwargs)
+
+        user = request.headers.get("XX-redirector-user")
+        pw = request.headers.get("XX-redirector-password")
+
+        if user == app.config['BASIC_AUTH_USERNAME'] and pw == app.config['BASIC_AUTH_PASSWORD']:
+            return view_func(*args, **kwargs)
+
+        return basic_auth.challenge()
+
+    return wrapper
+
+
 @app.route('/app/<appname>' , methods=['GET'])
 def get(appname):
     redirects = app.config["REDIRECTS"]
@@ -28,7 +51,7 @@ def get(appname):
     return redirect(last_redir_url)
 
 @app.route('/config', methods=['GET'])
-@basic_auth.required
+@requires_auth
 def getConfig():
     redirects = app.config["REDIRECTS"]
     return {
@@ -37,7 +60,7 @@ def getConfig():
     }
 
 @app.route('/app/<appname>', methods=['POST', 'PUT'])
-@basic_auth.required
+@requires_auth
 def set(appname):
     posted_json = request.get_json()
     if posted_json is None:
