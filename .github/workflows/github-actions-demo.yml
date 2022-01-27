@@ -37,8 +37,8 @@ jobs:
 
       - name: Converts dependencies to requirements.txt format
         run: |
-          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-          poetry export > requirements.txt
+          curl -sSL https://install.python-poetry.org | python3 -
+          $HOME/.poetry/bin/poetry export > requirements.txt
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
