@@ -13,6 +13,8 @@ the right POST/PUT requests to update the URL properly.
 
 # Launch
 
+## With python 
+
 You can just run the ```main.py```.
 The dependencies are handled by poetry, so you can install them 
 with ```poetry install```, or use any other method you like.
@@ -22,6 +24,18 @@ environment variable.
 
 You can change the location of the json "database" by setting the 
 ```CONFIG_FILE_PATH``` environment variable.
+
+## With docker 
+
+```
+docker run -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector:/database -p 8080:8080 ghcr.io/maximeweyl/redirector:workflow
+```
+
+## With OVHcloud AI-Training job
+
+```
+ovhai job run -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector@GRA:/database --unsecure-http ghcr.io/maximeweyl/redirector:workflow
+```
 
 # Create/update a redirection
 
