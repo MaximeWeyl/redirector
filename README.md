@@ -34,9 +34,12 @@ The body of the request should have this form (json-formatted):
 }
 ```
 
-You must use basic authentication for creating/updating a redirection.
+You must use basic authentication ('Authorization' header) for creating/updating a redirection.
+Alternatively, you can also use the headers ```XX-redirector-user``` and ```XX-redirector-password```.
+
 The default username is 'admin' with the default password 'admin'.
 You can change the default username and password by using these environment variables:
+
 - BASIC_AUTH_USERNAME
 - BASIC_AUTH_PASSWORD
 
