@@ -34,7 +34,7 @@ docker run -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG
 ## With OVHcloud AI-Training job
 
 ```
-ovhai job run -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector@GRA:/database:rw --unsecure-http ghcr.io/maximeweyl/redirector
+ovhai job run --cpu 1 -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector@GRA:/database:rw --unsecure-http ghcr.io/maximeweyl/redirector
 ```
 
 # Create/update a redirection
