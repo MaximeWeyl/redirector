@@ -25,7 +25,10 @@ environment variable.
 You can change the location of the json "database" by setting the 
 ```CONFIG_FILE_PATH``` environment variable.
 
-Your config file should look like ```config.sample.json```.
+Your config file should look like ```config.sample.json```. If it does not exist,
+it will be created.
+
+
 ## With docker 
 
 ```
