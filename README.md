@@ -25,30 +25,31 @@ environment variable.
 You can change the location of the json "database" by setting the 
 ```CONFIG_FILE_PATH``` environment variable.
 
+Your config file should look like ```config.sample.json```.
 ## With docker 
 
 ```
-docker run -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector:/database -p 8080:8080 ghcr.io/maximeweyl/redirector
+docker run -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector:/database -p 8080:8080 ghcr.io/maximeweyl/redirector:master
 ```
 
 ## With OVHcloud AI-Training job
 
 ```
-ovhai job run --cpu 1 -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector@GRA:/database:rw --unsecure-http ghcr.io/maximeweyl/redirector
+ovhai job run --cpu 1 -e BASIC_AUTH_USERNAME=user -e BASIC_AUTH_PASSWORD=password -e CONFIG_FILE_PATH=/database/redirects.json -v redirector@GRA:/database:rw --unsecure-http ghcr.io/maximeweyl/redirector:master
 ```
 
 # Create/update a redirection
 
 To POST or PUT a new redirection, use the ```/app/<application>``` url, where ```<application>``` is the name of the application.
-The body of the request should have this form (json-formatted): 
+
+The request should have this form (json-formatted).
 
 ```
-{
-    "url": "https://my-url.com"
-}
+curl -d {"url":"my-url"} -H "Content-Type: application/json"  -u "user:password" -X POST http://172.17.0.1:8080/app/my-app
 ```
 
 You must use basic authentication ('Authorization' header) for creating/updating a redirection.
+
 Alternatively, you can also use the headers ```XX-redirector-user``` and ```XX-redirector-password```.
 
 The default username is 'admin' with the default password 'admin'.
